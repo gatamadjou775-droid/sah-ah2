@@ -1,0 +1,120 @@
+========================================================
+ ACDEES — GUIDE D'UTILISATION (RH & PARC AUTO)
+========================================================
+
+Ce dossier contient le logiciel complet de pointage sécurisé par QR
+dynamique, de suivi RH et de gestion du parc automobile.
+
+PRINCIPE DU POINTAGE PAR QR (remplace la reconnaissance faciale)
+------------------------------------------------------------------
+Le pointage se fait désormais avec DEUX appareils, infalsifiable
+même par photo ou capture d'écran :
+  1. L'employé sélectionne son nom sur la TABLETTE (app "Pointage")
+     à l'entrée : un QR temporaire (25 secondes) s'affiche.
+  2. Il le scanne avec son app personnelle "Scan", installée sur SON
+     PROPRE téléphone (jumelé une seule fois avec un code secret).
+  3. Le téléphone signe le QR avec ce code secret (jamais transmis
+     en clair) ; le pointage n'est validé QUE si la signature
+     correspond exactement à l'employé sélectionné sur la tablette.
+
+Deux façons d'utiliser le logiciel :
+  A) En LOCAL, sur votre réseau Wi-Fi d'entreprise (gratuit, décrit ici)
+  B) En LIGNE, accessible de partout (voir DEPLOIEMENT-EN-LIGNE.md)
+
+--------------------------------------------------------
+1) DÉMARRER EN LOCAL (sur votre réseau Wi-Fi)
+--------------------------------------------------------
+Sur l'ordinateur qui servira de "serveur" (un PC qui reste allumé) :
+
+  a) Installez Node.js (gratuit) : https://nodejs.org (version LTS)
+  b) Copiez ce dossier entier sur cet ordinateur
+  c) Windows : double-cliquez sur "demarrer.bat"
+     Mac/Linux : double-cliquez sur "demarrer.sh"
+
+Une fenêtre noire s'ouvre. AU TOUT PREMIER DÉMARRAGE, elle affiche :
+
+    Première installation — identifiants RH générés :
+      Utilisateur       : admin
+      Mot de passe      : ••••••••••••
+      Code d'activation tablette : ••••••••
+
+⚠️ NOTEZ-LES IMMÉDIATEMENT — ils ne seront plus jamais réaffichés en
+clair par la suite (le mot de passe est ensuite stocké de façon
+chiffrée, illisible même par vous).
+
+La fenêtre affiche aussi une adresse réseau du type :
+    ➜  http://192.168.1.25:3000
+NOTEZ CETTE ADRESSE et laissez la fenêtre ouverte toute la journée.
+
+--------------------------------------------------------
+2) CONNECTER LES APPAREILS (trois applications)
+--------------------------------------------------------
+Sur CHAQUE appareil (même Wi-Fi que le serveur), ouvrez un navigateur
+et allez à l'adresse notée, par exemple http://192.168.1.25:3000
+
+  📲 Pointage → TABLETTE fixée à l'entrée
+      Au premier lancement, elle demande le CODE D'ACTIVATION
+      (celui affiché au démarrage du serveur, ou régénérable ensuite
+      depuis l'espace RH → Employés → Sécurité). Une fois saisi, la
+      tablette reste activée durablement et affiche l'horloge + les
+      boutons Arrivée / Départ / Justifier.
+
+  📱 Scan → téléphone PERSONNEL de chaque employé
+      Au premier lancement, l'employé saisit son code secret personnel
+      (fourni une seule fois par la RH, voir ci-dessous) pour jumeler
+      son identité. Ensuite, il ouvre cette app pour scanner le QR
+      affiché sur la tablette à chaque pointage.
+
+  🗂️ Espace RH → poste RH
+      Connexion avec l'IDENTIFIANT + MOT DE PASSE notés à l'étape 1.
+      Changez le mot de passe dès la première connexion :
+      tuile Employés → fiche employé → "Sécurité du compte" (icône
+      ronde en haut à droite).
+      Cet espace regroupe aussi le module "🚚 Parc Auto" : véhicules,
+      chauffeurs, missions, carburant, entretien, documents, dépenses
+      et incidents.
+
+Pour CHAQUE employé, ouvrez sa fiche dans Espace RH → tuile "Employés"
+et cliquez sur "🔑 Régénérer" pour générer son code secret personnel.
+Communiquez-le une seule fois à l'employé : il l'entre dans l'app
+Scan de son téléphone pour jumeler son identité (une seule fois,
+sauf changement de téléphone).
+
+--------------------------------------------------------
+3) PONCTUALITÉ : retards et pointages à l'heure sont séparés
+--------------------------------------------------------
+Sur le tableau de bord et dans la tuile "⏱ Ponctualité", deux vues
+distinctes sont disponibles : "Retards" (uniquement les véritables
+retards/départs anticipés) et "À l'heure" (tous les pointages
+conformes à l'horaire prévu). Seuls les vrais retards sont
+comptabilisés dans les statistiques et compteurs de retard.
+
+--------------------------------------------------------
+4) SI VOUS PERDEZ LE CODE D'ACTIVATION TABLETTE
+--------------------------------------------------------
+Connectez-vous à l'espace RH → tuile Employés → Sécurité → "🔄 Régénérer"
+Le nouveau code s'affiche immédiatement à l'écran. Attention : cela
+déconnecte instantanément toutes les tablettes déjà activées, qui
+devront ressaisir le nouveau code.
+
+--------------------------------------------------------
+5) SI VOUS PERDEZ LE MOT DE PASSE RH
+--------------------------------------------------------
+Arrêtez le serveur, supprimez le fichier "data.json", puis relancez :
+un nouveau compte "admin" avec un nouveau mot de passe sera généré
+et affiché (⚠️ cela efface aussi toutes les données de pointage —
+à faire uniquement en dernier recours, ou pensez à consulter le
+dossier "sauvegardes/" qui contient une copie automatique par jour).
+
+--------------------------------------------------------
+6) SAUVEGARDES
+--------------------------------------------------------
+Une copie de sécurité de "data.json" est créée automatiquement chaque
+jour dans le dossier "sauvegardes/". Pensez aussi à copier ce dossier
+sur une clé USB de temps en temps.
+
+--------------------------------------------------------
+7) PASSER EN LIGNE (accessible depuis partout, pas juste le Wi-Fi)
+--------------------------------------------------------
+Voir le fichier DEPLOIEMENT-EN-LIGNE.md pour héberger ce logiciel sur
+Render ou Railway avec un vrai nom de domaine et le HTTPS automatique.
